@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>爱心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(45deg, #000000, #1a1a2e, #16213e, #0f3460);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        .heart {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            background-color: #e74c3c;
+            transform: rotate(-45deg);
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 30px rgba(231, 76, 60, 0.7);
+        }
+        
+        .heart:before,
+        .heart:after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background-color: #e74c3c;
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(231, 76, 60, 0.7);
+        }
+        
+        .heart:before {
+            top: -100px;
+            left: 0;
+        }
+        
+        .heart:after {
+            top: 0;
+            left: 100px;
+        }
+        
+        .heart-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            width: 120px;
+            z-index: 1;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: rotate(-45deg) scale(1);
+            }
+            50% {
+                transform: rotate(-45deg) scale(1.1);
+            }
+            100% {
+                transform: rotate(-45deg) scale(1);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .heart {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .heart:before,
+            .heart:after {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .heart:before {
+                top: -75px;
+            }
+            
+            .heart:after {
+                left: 75px;
+            }
+            
+            .heart-content {
+                font-size: 1rem;
+                width: 90px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="heart">
+        <div class="heart-content">
+            王姐最美了
+        </div>
+    </div>
+</body>
+</html>
