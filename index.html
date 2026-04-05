@@ -39,8 +39,56 @@
             height: 200px;
             background-color: #e74c3c;
             transform: rotate(-45deg);
-            animation: pulse 2s infinite;
+            cursor: pointer;
             box-shadow: 0 0 30px rgba(231, 76, 60, 0.7);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: rotate(-45deg) scale(1);
+            }
+            50% {
+                transform: rotate(-45deg) scale(1.1);
+            }
+            100% {
+                transform: rotate(-45deg) scale(1);
+            }
+        }
+        
+        .heart-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .small-heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #e74c3c;
+            transform: rotate(-45deg);
+            pointer-events: none;
+            animation: floatAway 5s ease-out forwards;
+        }
+        
+        .small-heart:before,
+        .small-heart:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #e74c3c;
+            border-radius: 50%;
+        }
+        
+        .small-heart:before {
+            top: -10px;
+            left: 0;
+        }
+        
+        .small-heart:after {
+            top: 0;
+            left: 10px;
         }
         
         .heart:before,
@@ -78,15 +126,14 @@
             text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
         
-        @keyframes pulse {
+        @keyframes floatAway {
             0% {
+                opacity: 1;
                 transform: rotate(-45deg) scale(1);
-            }
-            50% {
-                transform: rotate(-45deg) scale(1.1);
             }
             100% {
-                transform: rotate(-45deg) scale(1);
+                opacity: 0;
+                transform: rotate(-45deg) scale(0.3) translateY(-500px);
             }
         }
         
@@ -118,10 +165,69 @@
     </style>
 </head>
 <body>
-    <div class="heart">
-        <div class="heart-content">
-            王姐最美了
+    <div class="heart-container">
+        <div class="heart" id="heart">
+            <div class="heart-content">
+                王姐最美了
+            </div>
         </div>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const heart = document.getElementById('heart');
+            const heartContainer = heart.parentElement;
+            
+            heart.addEventListener('click', function(e) {
+                // 生成多个小爱心
+                for (let i = 0; i < 10; i++) {
+                    createSmallHeart(e);
+                }
+            });
+            
+            function createSmallHeart(e) {
+                const smallHeart = document.createElement('div');
+                smallHeart.classList.add('small-heart');
+                
+                // 计算位置
+                const heartRect = heart.getBoundingClientRect();
+                const containerRect = heartContainer.getBoundingClientRect();
+                
+                // 随机位置在心脏范围内
+                const x = Math.random() * (heartRect.width - 20);
+                const y = Math.random() * (heartRect.height - 20);
+                
+                // 设置位置
+                smallHeart.style.left = x + 'px';
+                smallHeart.style.top = y + 'px';
+                
+                // 随机颜色
+                const colors = ['#e74c3c', '#ff6b6b', '#ff8787', '#ff9e9e'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                smallHeart.style.backgroundColor = randomColor;
+                
+                // 设置伪元素颜色
+                const style = document.createElement('style');
+                const heartId = 'heart-' + Date.now() + '-' + Math.random();
+                smallHeart.id = heartId;
+                style.textContent = `
+                    #${heartId}:before,
+                    #${heartId}:after {
+                        background-color: ${randomColor} !important;
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                // 添加到容器
+                heartContainer.appendChild(smallHeart);
+                
+                // 动画结束后移除
+                setTimeout(function() {
+                    smallHeart.remove();
+                    style.remove();
+                }, 5000);
+            }
+        });
+    </script>
 </body>
 </html>
