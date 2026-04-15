@@ -68,7 +68,7 @@
             background-color: #e74c3c;
             transform: rotate(-45deg);
             pointer-events: none;
-            animation: floatAway 5s ease-out forwards;
+            animation: floatAway 5s ease-out forwards, colorChange 5s ease-in-out infinite;
         }
         
         .small-heart:before,
@@ -79,6 +79,7 @@
             height: 20px;
             background-color: #e74c3c;
             border-radius: 50%;
+            animation: colorChange 5s ease-in-out infinite;
         }
         
         .small-heart:before {
@@ -134,6 +135,24 @@
             100% {
                 opacity: 0;
                 transform: rotate(-45deg) scale(0.3) translateY(-500px);
+            }
+        }
+        
+        @keyframes colorChange {
+            0% {
+                background-color: #e74c3c;
+            }
+            25% {
+                background-color: #ff6b6b;
+            }
+            50% {
+                background-color: #ff8787;
+            }
+            75% {
+                background-color: #ff9e9e;
+            }
+            100% {
+                background-color: #e74c3c;
             }
         }
         
@@ -201,19 +220,19 @@
                 smallHeart.style.left = x + 'px';
                 smallHeart.style.top = y + 'px';
                 
-                // 随机颜色
-                const colors = ['#e74c3c', '#ff6b6b', '#ff8787', '#ff9e9e'];
-                const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                smallHeart.style.backgroundColor = randomColor;
+                // 移除随机颜色设置，使用CSS动画控制颜色变化
+                // 为每个小爱心添加随机的动画延迟，使颜色变化不同步
+                const delay = Math.random() * 2;
+                smallHeart.style.animationDelay = delay + 's';
                 
-                // 设置伪元素颜色
+                // 为伪元素添加相同的延迟
                 const style = document.createElement('style');
                 const heartId = 'heart-' + Date.now() + '-' + Math.random();
                 smallHeart.id = heartId;
                 style.textContent = `
                     #${heartId}:before,
                     #${heartId}:after {
-                        background-color: ${randomColor} !important;
+                        animation-delay: ${delay}s !important;
                     }
                 `;
                 document.head.appendChild(style);
