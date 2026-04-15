@@ -61,35 +61,14 @@
             display: inline-block;
         }
         
-        .small-heart {
+        .blessing {
             position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: #e74c3c;
-            transform: rotate(-45deg);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
             pointer-events: none;
             animation: floatAway 5s ease-out forwards, colorChange 5s ease-in-out infinite;
-        }
-        
-        .small-heart:before,
-        .small-heart:after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: #e74c3c;
-            border-radius: 50%;
-            animation: colorChange 5s ease-in-out infinite;
-        }
-        
-        .small-heart:before {
-            top: -10px;
-            left: 0;
-        }
-        
-        .small-heart:after {
-            top: 0;
-            left: 10px;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         }
         
         .heart:before,
@@ -197,53 +176,57 @@
             const heart = document.getElementById('heart');
             const heartContainer = heart.parentElement;
             
+            // 定义祝福语数组
+            const blessings = [
+                '王姐最美！',
+                '永远年轻！',
+                '天天开心！',
+                '心想事成！',
+                '笑口常开！',
+                '美丽动人！',
+                '青春永驻！',
+                '幸福安康！',
+                '吉祥如意！',
+                '万事顺意！'
+            ];
+            
             heart.addEventListener('click', function(e) {
-                // 生成多个小爱心
-                for (let i = 0; i < 10; i++) {
-                    createSmallHeart(e);
+                // 生成多个祝福语
+                for (let i = 0; i < 5; i++) {
+                    createBlessing(e);
                 }
             });
             
-            function createSmallHeart(e) {
-                const smallHeart = document.createElement('div');
-                smallHeart.classList.add('small-heart');
+            function createBlessing(e) {
+                const blessing = document.createElement('div');
+                blessing.classList.add('blessing');
+                
+                // 随机选择祝福语
+                const randomBlessing = blessings[Math.floor(Math.random() * blessings.length)];
+                blessing.textContent = randomBlessing;
                 
                 // 计算位置
                 const heartRect = heart.getBoundingClientRect();
-                const containerRect = heartContainer.getBoundingClientRect();
                 
                 // 随机位置在心脏范围内
-                const x = Math.random() * (heartRect.width - 20);
-                const y = Math.random() * (heartRect.height - 20);
+                const x = Math.random() * (heartRect.width - 80);
+                const y = Math.random() * (heartRect.height - 30);
                 
                 // 设置位置
-                smallHeart.style.left = x + 'px';
-                smallHeart.style.top = y + 'px';
+                blessing.style.left = x + 'px';
+                blessing.style.top = y + 'px';
                 
-                // 移除随机颜色设置，使用CSS动画控制颜色变化
-                // 为每个小爱心添加随机的动画延迟，使颜色变化不同步
+                // 为每个祝福语添加随机的动画延迟
                 const delay = Math.random() * 2;
-                smallHeart.style.animationDelay = delay + 's';
-                
-                // 为伪元素添加相同的延迟
-                const style = document.createElement('style');
-                const heartId = 'heart-' + Date.now() + '-' + Math.random();
-                smallHeart.id = heartId;
-                style.textContent = `
-                    #${heartId}:before,
-                    #${heartId}:after {
-                        animation-delay: ${delay}s !important;
-                    }
-                `;
-                document.head.appendChild(style);
+                // 重新设置完整的动画属性，包括两个动画和延迟
+                blessing.style.animation = `floatAway 5s ease-out forwards ${delay}s, colorChange 5s ease-in-out infinite ${delay}s`;
                 
                 // 添加到容器
-                heartContainer.appendChild(smallHeart);
+                heartContainer.appendChild(blessing);
                 
                 // 动画结束后移除
                 setTimeout(function() {
-                    smallHeart.remove();
-                    style.remove();
+                    blessing.remove();
                 }, 5000);
             }
         });
